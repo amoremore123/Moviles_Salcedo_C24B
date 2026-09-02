@@ -23,6 +23,9 @@ fun RegistroNotasScreen() {
     var notaMoviles by remember { mutableStateOf(0f) }
     var notaBd by remember { mutableStateOf(0f) }
 
+    var redondear by remember { mutableStateOf(false) }
+    var confirmado by remember { mutableStateOf(false) }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -52,6 +55,35 @@ fun RegistroNotasScreen() {
                 CursoRow("Programación Orientada a Objetos (25%)", notaPoo) { notaPoo = it }
                 CursoRow("Programación en Móviles (30%)", notaMoviles) { notaMoviles = it }
                 CursoRow("Base de Datos (25%)", notaBd) { notaBd = it }
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text("Redondear promedio final", fontSize = 14.sp)
+                    Switch(checked = redondear, onCheckedChange = { redondear = it })
+                }
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Checkbox(checked = confirmado, onCheckedChange = { confirmado = it })
+                    Text("Confirmo que las notas son correctas", fontSize = 14.sp)
+                }
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Button(
+                    onClick = { /* Lógica de cálculo en el Paso 4 */ },
+                    enabled = confirmado,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("CALCULAR PROMEDIO")
+                }
 
                 Spacer(modifier = Modifier.weight(1f))
 
