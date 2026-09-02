@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -25,6 +26,7 @@ fun RegistroNotasScreen() {
 
     var redondear by remember { mutableStateOf(false) }
     var confirmado by remember { mutableStateOf(false) }
+    var calculado by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -78,17 +80,73 @@ fun RegistroNotasScreen() {
                 Spacer(modifier = Modifier.height(12.dp))
 
                 Button(
-                    onClick = { /* Lógica de cálculo en el Paso 4 */ },
+                    onClick = { calculado = true },
                     enabled = confirmado,
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text("CALCULAR PROMEDIO")
                 }
 
-                Spacer(modifier = Modifier.weight(1f))
+                Spacer(modifier = Modifier.height(16.dp))
+
+                if (!calculado) {
+                    Text(
+                        text = "Asigna las notas y confirma para calcular",
+                        color = Color.Gray,
+                        fontSize = 14.sp
+                    )
+                } else {
+                    val promPonderado = (notaFundamentos * 0.20f) + (notaPoo * 0.25f) + (notaMoviles * 0.30f) + (notaBd * 0.25f)
+                    val promFinal = if (redondear) promPonderado.roundToInt().toFloat() else promPonderado
+
+                    val (observacion, colorChip) = when {
+                        promFinal >= 17f -> "EXCELENTE" to Color(0xFF1B5E20)
+                        promFinal >= 13f -> "APROBADO" to Color(0xFF4CAF50)
+                        promFinal >= 10f -> "EN RECUPERACIÓN" to Color(0xFFFFB300)
+                        else -> "DESAPROBADO" to Color(0xFFE53935)
+                    }
+
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(12.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color.White),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(16.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text("Promedio Ponderado: %.2f".format(promPonderado), fontSize = 15.sp)
+
+                            val textoFinal = if (redondear) {
+                                "Promedio Final: ${promFinal.toInt()} (redondeado)"
+                            } else {
+                                "Promedio Final: %.2f".format(promFinal)
+                            }
+
+                            Text(textoFinal, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            Surface(color = colorChip, shape = RoundedCornerShape(16.dp)) {
+                                Text(
+                                    text = observacion,
+                                    color = Color.White,
+                                    fontWeight = FontWeight.Bold,
+                                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
+                                )
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Text("✓ Confirmación registrada", color = Color(0xFF2E7D32), fontWeight = FontWeight.Medium)
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
 
                 Text(
-                    text = "Desarrollado por: [Tu Nombre Completo]",
+                    text = "Desarrollado por: [Coloca Tu Nombre Completo]",
                     fontSize = 12.sp,
                     color = Color.Gray
                 )
