@@ -119,6 +119,13 @@ fun PantallaRegistro() {
                     )
                 }
             }
+
+            Spacer(modifier = Modifier.height(12.dp))
+            Text(
+                text = "✓ Producto registrado correctamente",
+                color = androidx.compose.ui.graphics.Color(0xFF2E7D32),
+                fontWeight = FontWeight.Medium
+            )
         }
     }
 }
