@@ -31,6 +31,7 @@ fun PantallaRegistro() {
     var nombre by remember { mutableStateOf("") }
     var precio by remember { mutableStateOf("") }
     var cantidad by remember { mutableStateOf("") }
+    var mostrarResumen by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -79,5 +80,45 @@ fun PantallaRegistro() {
         }
 
         Spacer(modifier = Modifier.height(16.dp))
+
+        Button(
+            onClick = { mostrarResumen = true },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("AGREGAR PRODUCTO")
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        if (mostrarResumen) {
+            val p = precio.toDoubleOrNull() ?: 0.0
+            val c = cantidad.toIntOrNull() ?: 0
+            val importe = p * c
+
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant
+                )
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text(
+                        text = "Resumen del Producto",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text("Producto: $nombre")
+                    Text("Precio unitario: S/ ${String.format("%.2f", p)}")
+                    Text("Cantidad: $c")
+                    Divider(modifier = Modifier.padding(vertical = 8.dp))
+                    Text(
+                        text = "Importe total: S/ ${String.format("%.2f", importe)}",
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
+        }
     }
 }
