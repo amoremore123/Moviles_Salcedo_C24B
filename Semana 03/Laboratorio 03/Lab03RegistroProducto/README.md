@@ -4,9 +4,6 @@
 **Curso:** Programación en Móviles  
 **Docente:** Juan José León Suiyon  
 
-## Capturas de Pantalla
-
-*(Inserta aquí las 2 capturas del emulador: formulario vacío y producto registrado)*
 
 ## Preguntas de Reflexión
 
